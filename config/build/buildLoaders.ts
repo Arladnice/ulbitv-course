@@ -8,6 +8,11 @@ export function buildLoaders(options: BuildOptions): webpack.RuleSetRule[] {
     exclude: /node_modules/,
   };
 
+  const svgLoader = {
+    test: /\.svg$/,
+    use: ["@svgr/webpack"],
+  };
+
   const sassLoader = {
     test: /\.s[ac]ss$/i,
     use: [
@@ -21,11 +26,20 @@ export function buildLoaders(options: BuildOptions): webpack.RuleSetRule[] {
               ? "[path][name]__[local]--[hash:base64:5]"
               : "[hash:base64:8]",
           },
-        }
+        },
       },
       "sass-loader",
     ],
   };
 
-  return [typescriptLoader, sassLoader];
+  const fileLoader = {
+    test: /\.(png|jpe?g|gif|woff2|woff)$/i,
+    use: [
+      {
+        loader: "file-loader",
+      },
+    ],
+  };
+
+  return [fileLoader, svgLoader, typescriptLoader, sassLoader];
 }
